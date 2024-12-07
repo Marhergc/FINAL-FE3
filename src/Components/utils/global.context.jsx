@@ -1,38 +1,26 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 
 // Estado inicial
 const initialState = {
-  theme: 'light',  // Modo claro por defecto
-  favorites: [],  // Lista de favoritos
+  favs: [] // Aquí guardamos los favoritos
 };
 
 // Reducer
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_FAVORITE':
-      return {
-        ...state,
-        favorites: [...state.favorites, action.payload],  // Agregar al array de favoritos
-      };
-    case 'REMOVE_FAVORITE':
-      return {
-        ...state,
-        favorites: state.favorites.filter(dentist => dentist.id !== action.payload.id),  // Eliminar de favoritos
-      };
-    case 'TOGGLE_THEME':
-      return {
-        ...state,
-        theme: state.theme === 'light' ? 'dark' : 'light',  // Alternar entre light y dark mode
-      };
+    case 'ADD_FAV':
+      return { ...state, favs: [...state.favs, action.payload] };
+    case 'REMOVE_FAV':
+      return { ...state, favs: state.favs.filter((fav) => fav.id !== action.payload) };
     default:
       return state;
   }
 };
 
-// Contexto global
+// Contexto
 const GlobalContext = createContext();
 
-// Proveedor de contexto
+// Proveedor del contexto
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
@@ -42,7 +30,7 @@ export const GlobalProvider = ({ children }) => {
   );
 };
 
-// Hook personalizado para acceder al contexto
+// Hook para usar el contexto
 export const useGlobalContext = () => {
   return useContext(GlobalContext);
 };

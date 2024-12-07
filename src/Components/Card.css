@@ -1,0 +1,87 @@
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  height: auto;
+  width: calc(25% - 20px);
+  box-sizing: border-box;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-content {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #000; /* Asegura que el texto sea negro por defecto */
+}
+
+.card .card-content h3,
+.card .card-content p {
+  margin: 5px 0;
+  color: inherit; /* El texto hereda el color de card-content */
+}
+
+.card:hover {
+  transform: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.card {
+  background-color: inherit;
+  color: inherit;
+  border: 1px solid currentColor;
+}
+
+.App.dark .card img {
+  filter: brightness(0.8);
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: darkblue;
+}
+
+/* Asegura que el color del texto dentro de .card-content siga siendo negro incluso en modo oscuro */
+.App.dark-mode .card-content {
+  color: #000; /* Color negro para el texto en modo oscuro */
+}

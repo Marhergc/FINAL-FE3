@@ -1,36 +1,35 @@
 import React from 'react';
-import { useGlobalContext } from '../Components/utils/global.context';
 import { Link } from 'react-router-dom';
+import { useGlobalContext } from '../Components/utils/global.context';
 
 const Favs = () => {
-  const { state, dispatch } = useGlobalContext();  // Acceder al contexto global
-  const favorites = state.favorites || [];  // Asegurarse de que 'favorites' sea un array, por si no está definido
+  const { state, dispatch } = useGlobalContext();
 
-  // Función para quitar de favoritos
-  const removeFromFavorites = (dentist) => {
-    dispatch({ type: 'REMOVE_FAVORITE', payload: dentist });
+  const handleRemoveFav = (id) => {
+    dispatch({ type: 'REMOVE_FAV', payload: id });
   };
 
   return (
-    <main className={state.theme}>
-      <h1>Favoritos</h1>
-      <div className="card-container">
-        {favorites.length > 0 ? (
-          favorites.map((dentist) => (
-            <div className="card" key={dentist.id}> {/* Usar 'id' como clave única */}
-              <h2>{dentist.name}</h2>
-              <p>{dentist.email}</p>
-              <button>
-                <Link to={`/detail/${dentist.id}`}>Ver detalle</Link>
-              </button>
-              <button onClick={() => removeFromFavorites(dentist)}>Remove Fav</button>
+    <div className="favs">
+      <h1>Dentistas Favoritos</h1>
+      <div className="card-grid">
+        {state.favs.length > 0 ? (
+          state.favs.map((fav) => (
+            <div key={fav.id} className="card">
+              <img src="/images/doctor.jpg" alt={fav.name} />
+              <h3>{fav.name}</h3>
+              <p>{fav.username}</p>
+              <Link to={`/detail/${fav.id}`}>
+                <button>Ver Detalles</button>
+              </Link>
+              <button onClick={() => handleRemoveFav(fav.id)}>Remover de Favoritos</button>
             </div>
           ))
         ) : (
-          <p>No tienes dentistas en tus favoritos.</p>
+          <p>Sin dentistas favoritos seleccionados</p>
         )}
       </div>
-    </main>
+    </div>
   );
 };
 

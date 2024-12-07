@@ -1,46 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; 
-import { useGlobalContext } from '../Components/utils/global.context';
+import React, { useEffect, useState } from "react";
+import Card from "../Components/Card";
+import { useGlobalContext } from "../Components/utils/global.context";
 
 const Home = () => {
-  const { state, dispatch } = useGlobalContext(); // Obtener estado global y función dispatch
   const [dentists, setDentists] = useState([]);
+  const { dispatch } = useGlobalContext();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
-        const data = await response.json();
-        setDentists(data);
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-      }
-    };
-
-    fetchData();
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((data) => setDentists(data))
+      .catch((error) => console.error("Error fetching dentists:", error));
   }, []);
 
-  // Función para agregar a favoritos
-  const addToFavorites = (dentist) => {
-    dispatch({ type: 'ADD_FAVORITE', payload: dentist }); // Actualiza el estado global
+  const handleAddFav = (dentist) => {
+    dispatch({ type: "ADD_FAV", payload: dentist });
   };
 
   return (
-    <main className={state.theme}>
-      <h1>Home</h1>
-      <div className="card-container">
-        {dentists.map((dentist) => (
-          <div className="card" key={dentist.id}>
-            <h2>{dentist.name}</h2>
-            <p>{dentist.email}</p>
-            <button>
-              <Link to={`/detail/${dentist.id}`}>Ver detalle</Link>
-            </button>
-            <button onClick={() => addToFavorites(dentist)}>Add Fav</button>
-          </div>
-        ))}
-      </div>
-    </main>
+    <div className="cards-container">
+      {dentists.map((dentist) => (
+        <div key={dentist.id} className="card">
+          <Card dentist={dentist} />
+          <button onClick={() => handleAddFav(dentist)}>
+            Agregar a favoritos
+          </button>
+        </div>
+      ))}
+    </div>
   );
 };
 

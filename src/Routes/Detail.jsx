@@ -1,40 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Detail = () => {
-  const { id } = useParams(); // Obtén el ID de la URL
-  const [dentist, setDentist] = useState(null); // Estado local para el detalle del dentista
+  const { id } = useParams();
+  const [dentist, setDentist] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Efecto para obtener los datos del dentista desde la API
   useEffect(() => {
-    const fetchDentist = async () => {
-      try {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
-        const data = await response.json();
-        setDentist(data); // Guarda los datos en el estado local
-      } catch (error) {
-        console.error('Error al obtener el detalle del dentista:', error);
-      }
-    };
-
-    fetchDentist();
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setDentist(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching dentist details:", error);
+        setLoading(false);
+      });
   }, [id]);
 
-  if (!dentist) {
-    return <p>Cargando detalle del dentista...</p>; // Renderiza esto mientras se cargan los datos
-  }
+  if (loading) return <p>Cargando...</p>;
+  if (!dentist) return <p>No se encontraton dentistas</p>;
 
   return (
-    <main>
-      <h1>Detalle del Dentista</h1>
-      <div className="dentist-detail">
-        <h2>{dentist.name}</h2>
-        <p>Email: {dentist.email}</p>
-        <p>Teléfono: {dentist.phone}</p>
-        <p>Website: <a href={`https://${dentist.website}`} target="_blank" rel="noopener noreferrer">{dentist.website}</a></p>
-        <p>Compañía: {dentist.company.name}</p>
-      </div>
-    </main>
+    <div className="detail">
+      <h1>{dentist.name}</h1>
+      <p><strong>Email:</strong> {dentist.email}</p>
+      <p><strong>Phone:</strong> {dentist.phone}</p>
+      <p><strong>Website:</strong> {dentist.website}</p>
+      <p><strong>Company:</strong> {dentist.company?.name}</p>
+      <p><strong>Address:</strong> {dentist.address?.street}, {dentist.address?.city}</p>
+    </div>
   );
 };
 

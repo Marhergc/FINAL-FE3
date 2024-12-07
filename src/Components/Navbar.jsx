@@ -1,22 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useGlobalContext } from './utils/global.context';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
-  const { state, dispatch } = useGlobalContext();
-
-  const toggleTheme = () => {
-    dispatch({ type: 'TOGGLE_THEME' });
-  };
-
+const Navbar = ({ toggleTheme }) => {
   return (
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/favs">Favs</Link>
-      <Link to="/contact">Contact</Link>
-      <button onClick={toggleTheme}>
-        {state.theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-      </button>
+    <nav className="navbar">
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/favs">Favs</Link>
+        </li>
+        <li>
+          <Link to="/contact">Contact</Link>
+        </li>
+      </ul>
+      {}
+      <div className="ms-auto">
+        <button className="theme-toggle" onClick={toggleTheme}>
+          Cambiar tema
+        </button>
+      </div>
     </nav>
   );
 };

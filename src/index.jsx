@@ -1,12 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import ReactDOM from 'react-dom/client';
 import App from './App';
-import { GlobalProvider } from './Components/utils/global.context';  // Corregido a GlobalProvider
+import './index.css';
 
-ReactDOM.render(
-  <GlobalProvider>
-    <App />
-  </GlobalProvider>,
-  document.getElementById('root')
+import { GlobalProvider } from './Components/utils/global.context';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <GlobalProvider>
+      <App />
+    </GlobalProvider>
+  </React.StrictMode>
 );
